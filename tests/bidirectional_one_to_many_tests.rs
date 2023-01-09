@@ -1,9 +1,7 @@
 use std::rc::{Rc, Weak};
 use std::cell::RefCell;
-// use std::fmt;
 use easy_associations::*;
 
-// #[derive(Debug)]
 pub struct One {
     me: Weak<RefCell<One>>,
     many_collection: Vec<Rc<RefCell<Many>>>
@@ -39,22 +37,6 @@ impl Many {
         })
     }
 }
-
-// impl fmt::Debug for Many {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         let mut f = f.debug_struct("ChildSelfRef");
-//         let f = f.field("me", &self.me);
-//         let mut f = f.field("name", &self.name);
-//
-//         if let Some(p) = &self.many {
-//             f = f.field("parent", &p.borrow().name)
-//         } else {
-//             f = f.field("parent", &"none")
-//         }
-//
-//         f.finish()
-//     }
-// }
 
 bidirectional_one_to_many!(
     One, 
