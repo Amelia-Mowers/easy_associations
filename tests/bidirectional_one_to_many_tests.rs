@@ -1,11 +1,14 @@
 use std::rc::{Rc, Weak};
 use std::cell::RefCell;
 use easy_associations::*;
+use easy_self_referencing_objects::{SelfReferencing, implement_self_referencing};
 
 pub struct One {
     me: Weak<RefCell<One>>,
     many_collection: Vec<Rc<RefCell<Many>>>
 }
+
+implement_self_referencing!(One, me);
 
 impl One {
     pub fn new() -> Rc<RefCell<Self>> {
@@ -25,6 +28,8 @@ pub struct Many {
     one_ref: Option<Rc<RefCell<One>>>
 }
 
+implement_self_referencing!(Many, me);
+
 impl Many {
     pub fn new() -> Rc<RefCell<Self>> {
         Rc::new_cyclic(|me| {
@@ -40,12 +45,10 @@ impl Many {
 
 bidirectional_one_to_many!(
     One, 
-    me,
     many_collection, 
     add_many,
     remove_many,
     Many, 
-    me,
     one_ref,
     set_one
 );
